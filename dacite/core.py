@@ -159,5 +159,15 @@ def _build_value_for_collection(collection: Type, data: Any, config: Config) -> 
         )
     elif isinstance(data, Collection) and is_subclass(collection, Collection):
         item_type = extract_generic(collection, defaults=(Any,))[0]
-        return data_type(_build_value(type_=item_type, data=item, config=config) for item in data)
+        items = (_build_value(type_=item_type, data=item, config=config) for item in data)
+        if isinstance(data, str) and not is_subclass(collection, Mapping):
+            if any(is_subclass(collection, cast_type) for cast_type in config.cast):
+                return items
+            if item_type is str and is_instance(data, collection):
+                values = list(items)
+                if not all(isinstance(value, str) for value in values):
+                    return values
+                value = "".join(values)
+                return data if value == data else value
+        return data_type(items)
     return data

@@ -155,6 +155,144 @@ def test_from_dict_with_generic_abstract_collection():
     assert result == X(l=[1])
 
 
+@pytest.mark.parametrize("collection", [Collection[str], Sequence[str]])
+@pytest.mark.parametrize("text", ["", "abc", "a\u03b2"])
+def test_from_dict_with_string_collection(collection, text):
+    @dataclass
+    class X:
+        value: collection
+
+    result = from_dict(X, {"value": text})
+
+    assert result.value == text
+    assert result.value is text
+
+
+@pytest.mark.parametrize("transform", [False, True])
+def test_from_dict_with_string_subclass_collection(transform):
+    class Text(str):
+        def __new__(cls, value, tag):
+            instance = super().__new__(cls, value)
+            instance.tag = tag
+            return instance
+
+    @dataclass
+    class X:
+        value: Sequence[str]
+
+    text = Text("abc", "original")
+
+    result = from_dict(X, {"value": text}, Config(type_hooks={str: str.upper} if transform else {}))
+
+    if transform:
+        assert result.value == "ABC"
+        assert type(result.value) is str
+    else:
+        assert result.value is text
+        assert result.value.tag == "original"
+
+
+@pytest.mark.parametrize("check_types", [True, False])
+def test_from_dict_with_string_collection_and_type_hooks(check_types):
+    @dataclass
+    class X:
+        value: Collection[str]
+
+    calls = []
+
+    def whole(value):
+        calls.append(("whole", value))
+        return "def"
+
+    def item(value):
+        calls.append(("item", value))
+        return value.upper()
+
+    result = from_dict(
+        X,
+        {"value": "abc"},
+        Config(type_hooks={Collection[str]: whole, str: item}, check_types=check_types),
+    )
+
+    assert result.value == "DEF"
+    assert calls == [("whole", "abc"), ("item", "d"), ("item", "e"), ("item", "f")]
+
+
+@pytest.mark.parametrize("check_types", [True, False])
+def test_from_dict_with_string_collection_and_wrong_type_hook_result(check_types):
+    @dataclass
+    class X:
+        value: Collection[str]
+
+    calls = []
+
+    def item(value):
+        calls.append(value)
+        return 1
+
+    config = Config(type_hooks={str: item}, check_types=check_types)
+    if check_types:
+        with pytest.raises(WrongTypeError) as exception_info:
+            from_dict(X, {"value": "abc"}, config)
+        assert exception_info.value.field_path == "value"
+        assert exception_info.value.value == [1, 1, 1]
+    else:
+        assert from_dict(X, {"value": "abc"}, config).value == [1, 1, 1]
+    assert calls == ["a", "b", "c"]
+
+
+@pytest.mark.parametrize("collection, container", [(List[str], list), (Set[str], set)])
+def test_from_dict_casting_string_collection_preserves_item_boundaries(collection, container):
+    @dataclass
+    class X:
+        value: collection
+
+    result = from_dict(X, {"value": "aba"}, Config(type_hooks={str: lambda value: f"<{value}>"}, cast=[container]))
+
+    assert result.value == container(["<a>", "<b>", "<a>"])
+
+
+def test_from_dict_casting_string_collection_and_inner_type():
+    @dataclass
+    class X:
+        value: List[int]
+
+    result = from_dict(X, {"value": "12"}, Config(cast=[int, list]))
+
+    assert result.value == [1, 2]
+
+
+def test_from_dict_with_string_collection_union():
+    @dataclass
+    class X:
+        value: Union[int, Sequence[str]]
+
+    result = from_dict(X, {"value": "abc"}, Config(type_hooks={str: str.upper}))
+
+    assert result.value == "ABC"
+
+
+def test_from_dict_with_string_collection_and_strict_union():
+    @dataclass
+    class X:
+        value: Union[Collection[int], Collection[str]]
+
+    result = from_dict(X, {"value": "a"}, Config(strict_unions_match=True))
+
+    assert result.value == "a"
+
+
+def test_from_dict_with_string_and_uncast_list():
+    @dataclass
+    class X:
+        value: List[str]
+
+    with pytest.raises(WrongTypeError) as exception_info:
+        from_dict(X, {"value": "abc"})
+
+    assert exception_info.value.field_path == "value"
+
+
 def test_from_dict_with_wrong_type_of_collection_item():
     @dataclass
     class X:
