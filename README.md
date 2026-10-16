@@ -2,8 +2,11 @@
 
 # dacite
 
-[![Build Status](https://travis-ci.org/konradhalas/dacite.svg?branch=master)](https://travis-ci.org/konradhalas/dacite)
-[![Coverage Status](https://coveralls.io/repos/github/konradhalas/dacite/badge.svg?branch=master)](https://coveralls.io/github/konradhalas/dacite?branch=master)
+Build, coverage and package badges below refer to
+[upstream dacite](https://github.com/konradhalas/dacite).
+
+[![Upstream build](https://travis-ci.org/konradhalas/dacite.svg?branch=master)](https://travis-ci.org/konradhalas/dacite)
+[![Upstream coverage](https://coveralls.io/repos/github/konradhalas/dacite/badge.svg?branch=master)](https://coveralls.io/github/konradhalas/dacite?branch=master)
 [![License](https://img.shields.io/pypi/l/dacite.svg)](https://pypi.python.org/pypi/dacite/)
 [![Version](https://img.shields.io/pypi/v/dacite.svg)](https://pypi.python.org/pypi/dacite/)
 [![Python versions](https://img.shields.io/pypi/pyversions/dacite.svg)](https://pypi.python.org/pypi/dacite/)
