@@ -5,7 +5,7 @@
 Build, coverage and package badges below refer to
 [upstream dacite](https://github.com/konradhalas/dacite).
 
-[![Upstream build](https://travis-ci.org/konradhalas/dacite.svg?branch=master)](https://travis-ci.org/konradhalas/dacite)
+[![Upstream CI](https://github.com/konradhalas/dacite/actions/workflows/ci_master.yaml/badge.svg?branch=master&event=push)](https://github.com/konradhalas/dacite/actions/workflows/ci_master.yaml)
 [![Upstream coverage](https://coveralls.io/repos/github/konradhalas/dacite/badge.svg?branch=master)](https://coveralls.io/github/konradhalas/dacite?branch=master)
 [![License](https://img.shields.io/pypi/l/dacite.svg)](https://pypi.python.org/pypi/dacite/)
 [![Version](https://img.shields.io/pypi/v/dacite.svg)](https://pypi.python.org/pypi/dacite/)
