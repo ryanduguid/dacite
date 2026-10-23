@@ -6,11 +6,11 @@ Coverage and package badges below refer to
 [upstream dacite](https://github.com/konradhalas/dacite). Upstream CI runs on
 pull requests; see its [Actions page](https://github.com/konradhalas/dacite/actions).
 
-[![Upstream coverage](https://img.shields.io/coverallsCoverage/github/konradhalas/dacite?branch=master&style=flat&labelColor=000000)](https://coveralls.io/github/konradhalas/dacite?branch=master)
-[![License](https://img.shields.io/pypi/l/dacite.svg?style=flat&labelColor=000000&color=66023C)](https://pypi.python.org/pypi/dacite/)
-[![Version](https://img.shields.io/pypi/v/dacite.svg?style=flat&labelColor=000000&color=66023C)](https://pypi.python.org/pypi/dacite/)
-[![Python versions](https://img.shields.io/pypi/pyversions/dacite.svg?style=flat&labelColor=000000&color=66023C)](https://pypi.python.org/pypi/dacite/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat&labelColor=000000&color=66023C)](https://github.com/ambv/black)
+<div align="center">
+
+[![Upstream coverage](https://img.shields.io/coverallsCoverage/github/konradhalas/dacite?branch=master&style=flat&labelColor=000000)](https://coveralls.io/github/konradhalas/dacite?branch=master) [![License](https://img.shields.io/pypi/l/dacite.svg?style=flat&labelColor=000000&color=66023C)](https://pypi.python.org/pypi/dacite/) [![Version](https://img.shields.io/pypi/v/dacite.svg?style=flat&labelColor=000000&color=66023C)](https://pypi.python.org/pypi/dacite/) [![Python versions](https://img.shields.io/pypi/pyversions/dacite.svg?style=flat&labelColor=000000&color=66023C)](https://pypi.python.org/pypi/dacite/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat&labelColor=000000&color=66023C)](https://github.com/ambv/black)
+
+</div>
 
 This module simplifies creation of data classes ([PEP 557][pep-557])
 from dictionaries.
